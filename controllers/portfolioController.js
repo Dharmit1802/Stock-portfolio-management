@@ -6,7 +6,7 @@ import { storeStock } from "../services/storeStock.js";
 export const addStockToPortfolio = async (req, res) => {
   try {
     const { stockSymbol, quantity, avgPrice } = req.body;
-    console.log(quantity, typeof (quantity));
+    // console.log(quantity, typeof (quantity));
     // Check if stock already exists in the database
     let stock = await Stock.findOne({ symbol: stockSymbol });
 
