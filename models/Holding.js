@@ -5,6 +5,6 @@ const HoldingSchema = new mongoose.Schema({
   stockId: { type: mongoose.Schema.Types.ObjectId, ref: "Stock", index: true },
   quantity: Number,
   avgPrice: Number,
-});
+}, { timestamps: true });
 
 export const Holding = mongoose.model("Holding", HoldingSchema);

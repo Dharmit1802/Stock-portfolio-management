@@ -7,6 +7,6 @@ const TransactionSchema = new mongoose.Schema({
   quantity: Number,
   price: Number,
   date: { type: Date, default: Date.now },
-});
+}, { timestamps: true });
 
 export const Transaction = mongoose.model("Transaction", TransactionSchema);

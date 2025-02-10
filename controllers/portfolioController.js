@@ -6,7 +6,7 @@ import { storeStock } from "../services/storeStock.js";
 export const addStockToPortfolio = async (req, res) => {
   try {
     const { stockSymbol, quantity, avgPrice } = req.body;
-
+    console.log(quantity, typeof (quantity));
     // Check if stock already exists in the database
     let stock = await Stock.findOne({ symbol: stockSymbol });
 
@@ -26,9 +26,9 @@ export const addStockToPortfolio = async (req, res) => {
 
       holding.avgPrice =
         (holding.avgPrice * holding.quantity + avgPrice * quantity) /
-        (holding.quantity + quantity);
+        (holding.quantity + Number(quantity));
 
-      holding.quantity += quantity;
+      holding.quantity += Number(quantity);
       await holding.save();
     } else {
       // Create a new stock holding
@@ -51,8 +51,11 @@ export const addStockToPortfolio = async (req, res) => {
 export const removeStockFromPortfolio = async (req, res) => {
   try {
     const { stockId } = req.params;
-    await Holding.findOneAndDelete({ userId: req.user.id, stockId });
-    res.json({ message: "Stock removed from portfolio" });
+    const stock = await Holding.findOneAndDelete({ userId: req.user.id, stockId });
+    if (!stock) {
+      res.status(500).json("already removed or stock doesn't in your holding")
+    }
+    res.status(200).json({ message: "Stock removed from portfolio" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

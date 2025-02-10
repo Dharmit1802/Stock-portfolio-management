@@ -52,7 +52,7 @@ export const addSellTransaction = async (req, res) => {
 
     // If quantity becomes 0, remove the holding
     if (holding.quantity === 0) {
-      await holding.remove();
+      await holding.deleteOne();
     } else {
       await holding.save(); // Save updated quantity
     }
@@ -76,7 +76,7 @@ export const transactionHistory = async (req, res) => {
   try {
     const transactions = await Transaction.find({
       userId: req.user.id,
-    }).populate({path:"stockId",select:"-history"});
+    }).populate({ path: "stockId", select: "-history" });
     res.json(transactions);
   } catch (error) {
     res.status(500).json({ error: error.message });
